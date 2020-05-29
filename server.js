@@ -80,29 +80,28 @@ const getPpkData = (db, ppkNum, format, callback) => {
                 await sleep(10000);
             }; 
             
-            // convert date
-            // ip combine with port ?
-            // tabulation
+            // convert date          
             // id and line convert to text NOT ALL
             // excel ? html txt
             // progress bar
 
             if(data.length === 0){
+                spinner.stop(true);
                 console.log('\nNo data found...');
-                console.log('Application will be closed in 10 seconds!');
-                spinner.stop(true);               
+                console.log('Application will be closed in 10 seconds!');                               
                 db.close();
                 await sleep(10000);
                 return null;
             }
 
             data.forEach(ppkData => {             
-                ppkData.date_time ? ppkData.date_time = convertUTCDateToLocalDate(new Date(ppkData.date_time.toLocaleString())) : null
+                //ppkData.date_time ? ppkData.date_time = convertUTCDateToLocalDate(new Date(ppkData.date_time.toLocaleString())) : ''
                 ppkData.id_msg = message.convertIdMessage(ppkData.id_msg);
                 ppkData.line = message.convertLineMessage(ppkData.line, ppkData.model);
             });
 
-            const json2csvParser = new Json2csvParser({ header: true, delimiter: '\t', quote: '' });
+            const fields = ['date_time', 'id_msg', 'line', 'model', 'address', 'port'];
+            const json2csvParser = new Json2csvParser({ fields, header: true, delimiter: '\t', quote: '' });
             const csvData = json2csvParser.parse(data);
 
             fs.writeFile(`PPK number ${ppkNum} journal.${format}`, csvData, "utf8", (err) => {
