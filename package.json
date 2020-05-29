@@ -1,0 +1,19 @@
+{
+  "name": "rcom-ppk-journal",
+  "version": "1.0.0",
+  "description": "App to get journal from rcom according to ppk number",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Yurii Litovinskyi",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^4.0.0",
+    "cli-select": "^1.1.2",
+    "cli-spinner": "^0.2.10",
+    "json2csv": "^5.0.1",
+    "mongodb": "^2.2.33",
+    "prompts": "^2.3.2"
+  }
+}
