@@ -65,7 +65,7 @@ const sleep = (timeout) => {
     });
 };
 
-const getPpkData = (db, ppkNum, format, callback) => {
+const getPpkData = (db, ppkNum, formatDoc, callback) => {
     db.collection('Journal', async (err, collection) => {
         if(err) {
             console.log(err);
@@ -75,54 +75,54 @@ const getPpkData = (db, ppkNum, format, callback) => {
         spinner.start(); 
         
         try {
-            const ppkDataArr = await collection.find({ppk_num: ppkNum}, {_id: 0}).toArray(async (err, data) => {
-            if(err) {
-                spinner.stop(true);
-                console.log(err);
-                db.close();
-                await sleep(10000);
-            };             
+            await collection.find({ppk_num: ppkNum}, {_id: 0}).toArray(async (err, data) => {
+                if(err) {
+                    spinner.stop(true);
+                    console.log(err);
+                    db.close();
+                    await sleep(10000);
+                };             
 
-            if(data.length === 0){
-                spinner.stop(true);
-                console.log('\nNo data found...');
-                console.log(chalk.magenta('Application will be closed in 10 seconds!'));                               
-                db.close();
-                await sleep(10000);
-                return null;
-            }            
+                if(data.length === 0){
+                    spinner.stop(true);
+                    console.log('\nNo data found...');
+                    console.log(chalk.magenta('Application will be closed in 10 seconds!'));                               
+                    db.close();
+                    await sleep(10000);
+                    return null;
+                };         
 
-            data.forEach(ppkData => {            
-                ppkData.date_time ? ppkData.date_time = new Date(ppkData.date_time).format("Y-MM-dd HH:mm:SS") : '';             
-                ppkData.id_msg = convertIdMessage(ppkData.id_msg);
-                ppkData.line = convertLineMessage(ppkData.line, ppkData.model);
-                ppkData.enabled = enabledStatus(ppkData.enabled);
-            });
-
-            if(format === 'html'){            
-                const tableHTML = jsonToHTMLTable(data)
-
-                fs.writeFile(`PPK number ${ppkNum} journal.html`, tableHTML, "utf8", (err) => {
-                    if (err) throw err; 
-                    db.close();            
+                data.forEach(ppkData => {            
+                    ppkData.date_time ? ppkData.date_time = new Date(ppkData.date_time).format("Y-MM-dd HH:mm:SS") : '';             
+                    ppkData.id_msg = convertIdMessage(ppkData.id_msg);
+                    ppkData.line = convertLineMessage(ppkData.line, ppkData.model);
+                    ppkData.enabled = enabledStatus(ppkData.enabled);
                 });
-            } else if(format === 'xlsx'){
-                const tableExcel = jsonToExcel(data);
 
-                fs.writeFile(`PPK number ${ppkNum} journal.xlsx`, tableExcel, "utf8", (err) => {
-                    if (err) throw err; 
-                    db.close();            
-                });
-               
-            } else {
-                const fields = ['date_time', 'id_msg', 'line', 'enabled', 'model', 'ppk_num', 'address', 'port'];
-                const json2csvParser = new Json2csvParser({ fields, header: true, delimiter: '\t', quote: '' });
-                const csvData = json2csvParser.parse(data);
-    
-                fs.writeFile(`PPK number ${ppkNum} journal.txt`, csvData, "utf8", (err) => {
-                    if (err) throw err; 
-                    db.close();            
-                });
+                if(formatDoc === 'html'){            
+                    const tableHTML = jsonToHTMLTable(data)
+
+                    fs.writeFile(`PPK number ${ppkNum} journal.html`, tableHTML, "utf8", (err) => {
+                        if (err) throw err; 
+                        db.close();            
+                    });
+                } else if(formatDoc === 'xlsx'){
+                    const tableExcel = jsonToExcel(data);
+
+                    fs.writeFile(`PPK number ${ppkNum} journal.xlsx`, tableExcel, "utf8", (err) => {
+                        if (err) throw err; 
+                        db.close();            
+                    });
+                
+                } else {
+                    const fields = ['date_time', 'id_msg', 'line', 'enabled', 'model', 'ppk_num', 'address', 'port'];
+                    const json2csvParser = new Json2csvParser({ fields, header: true, delimiter: '\t', quote: '' });
+                    const csvData = json2csvParser.parse(data);
+        
+                    fs.writeFile(`PPK number ${ppkNum} journal.txt`, csvData, "utf8", (err) => {
+                        if (err) throw err; 
+                        db.close();            
+                    });
             }
 
             spinner.stop(true);
@@ -137,3 +137,5 @@ const getPpkData = (db, ppkNum, format, callback) => {
         }    
     });   
 };
+
+    

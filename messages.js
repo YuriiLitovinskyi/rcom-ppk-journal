@@ -155,9 +155,9 @@ const convertLineMessage = (line, model) => {
 const enabledStatus = (enabled) => {
     switch(enabled){
         case true:
-            return "Статус: Приписаний";
+            return "Приписаний";
         case false:
-            return "Статус: Відписаний";
+            return "Відписаний";
         default:
             return enabled;
     }
