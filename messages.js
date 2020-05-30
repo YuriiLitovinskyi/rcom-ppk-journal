@@ -152,8 +152,20 @@ const convertLineMessage = (line, model) => {
     };
 };
 
+const enabledStatus = (enabled) => {
+    switch(enabled){
+        case true:
+            return "Статус: Приписаний";
+        case false:
+            return "Статус: Відписаний";
+        default:
+            return enabled;
+    }
+};
+
 
 module.exports = {
     convertIdMessage,
-    convertLineMessage
+    convertLineMessage,
+    enabledStatus
 };
