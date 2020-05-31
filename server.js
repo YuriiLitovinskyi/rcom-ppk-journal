@@ -104,7 +104,8 @@ const getPpkData = (db, ppkNum, formatDoc, callback) => {
 
                     fs.writeFile(`PPK number ${ppkNum} journal.html`, tableHTML, "utf8", (err) => {
                         if (err) throw err; 
-                        db.close(); 
+                        db.close();
+                        spinner.stop(true); 
                         callback();           
                     });
                 } else if(formatDoc === 'xlsx'){
@@ -112,7 +113,8 @@ const getPpkData = (db, ppkNum, formatDoc, callback) => {
 
                     fs.writeFile(`PPK number ${ppkNum} journal.xlsx`, tableExcel, "utf8", (err) => {
                         if (err) throw err; 
-                        db.close(); 
+                        db.close();
+                        spinner.stop(true); 
                         callback();           
                     });
                 
@@ -123,13 +125,11 @@ const getPpkData = (db, ppkNum, formatDoc, callback) => {
         
                     fs.writeFile(`PPK number ${ppkNum} journal.txt`, csvData, "utf8", (err) => {
                         if (err) throw err; 
-                        db.close();   
+                        db.close(); 
+                        spinner.stop(true);  
                         callback();         
                     });
             }
-
-            spinner.stop(true);
-            //callback(); 
         });
             
         } catch (err) {
