@@ -130,7 +130,9 @@ const convertIdMessage = (id) => {
 const convertLineMessage = (line, model) => {
     switch(line){
         case "24":
-            return "24 - режим 'Залишаюсь вдома (4L)'";
+            if(model && model === '4l' || model === '16l'){
+                return "24 - режим 'Залишаюсь вдома (4L)'";
+            };            
         case "25":
             if(model && model === '4l' || model === '16l'){
                 return '25 - Керування SET входом';
@@ -146,7 +148,9 @@ const convertLineMessage = (line, model) => {
         case "28":
             return "28 - Конфігурація приладу через Інтернет";
         case "29":
-            return "29 - Управління групою з мобільного додатку (4L)";
+            if(model && model === '4l' || model === '16l'){
+                return "29 - Управління групою з мобільного додатку (4L)";
+            };
         // case "30":
         //     return "30 - Керування статусами групи 1 за допомогою радіобрелока Crow";
         default:
