@@ -132,9 +132,9 @@ const convertLineMessage = (line, model) => {
         case "24":
             return "24 - режим 'Залишаюсь вдома (4L)'";
         case "25":
-            if(model && model === '4l' || model === '16L'){
+            if(model && model === '4l' || model === '16l'){
                 return '25 - Керування SET входом';
-            } else if (model && model === '8L'){
+            } else if (model && model === '8l'){
                 return '25 - Керування з мобільного додатку або з входу SET';
             } else {
                 return '25';
