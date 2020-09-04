@@ -13,7 +13,7 @@
     "cli-select": "^1.1.2",
     "cli-spinner": "^0.2.10",
     "json2csv": "^5.0.1",
-    "mongodb": "^2.2.33",
+    "mongodb": "^3.1.13",
     "nested-json-to-table": "^1.0.2",
     "node.date-time": "^1.2.2",
     "prompts": "^2.3.2"
